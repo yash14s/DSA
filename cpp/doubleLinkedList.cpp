@@ -1,135 +1,102 @@
-/*
-https://leetcode.com/problems/design-linked-list/
-*/
 class Node{
     public:
         int val;
         Node* next;
         Node* prev;
 
-        Node(int val_){
-            val = val_;
+        Node(int data){
+            val = data;
             next = nullptr;
             prev = nullptr;
         }
 };
 
 class MyLinkedList {
-    private:
-        Node* head = nullptr;
-        Node* tail = nullptr;
 public:
+    Node* left;
+    Node* right;
     MyLinkedList() {
-
+        left = new Node(0);
+        right = new Node(0);
+        left->next = right;
+        right->prev = left;
     }
     
     int get(int index) {
-        Node* curr = head;
-        int idx = -1;
+        int idx = 0;
+        Node* curr = left->next;
 
         while (curr != nullptr){
-            idx ++;
-            if (idx == index){
+            if(idx == index && curr != right){
                 return curr->val;
             }
             curr = curr->next;
+            idx ++;
         }
-
         return -1;
     }
     
     void addAtHead(int val) {
-        Node* newNode = new Node(val);
+        Node* node = new Node(val);
+        Node* prev = left;
+        Node* next = left->next;
 
-        if (head == nullptr){
-            head = tail = newNode;
-            return;
-        }
-        
-        newNode->next = head;
-        newNode->prev = nullptr; //not needed tho, by default the constructor puts this to null
-        head->prev = newNode;
-        head = newNode;
+        node->next = next;
+        node->prev = prev;
+        prev->next = node;
+        next->prev = node;
     }
     
     void addAtTail(int val) {
-        Node* newNode = new Node(val);
+        Node* node = new Node(val);
+        Node* next = right;
+        Node* prev = right->prev;
 
-        if (tail == nullptr){
-            head = tail = newNode;
-            return;
-        }
-
-        newNode->next = nullptr;    //not needed tho, by default the constructor puts this to null
-        newNode->prev = tail; 
-        tail->next = newNode;
-        tail = newNode;
+        node->next = next;
+        node->prev = prev;
+        prev->next = node;
+        next->prev = node;       
     }
     
     void addAtIndex(int index, int val) {
-        if (index == 0){
-            addAtHead(val);
-            return;
-        }
-
-        Node* curr = head;
-        int idx = -1;
+        int idx = 0;
+        Node* curr = left->next;
 
         while (curr != nullptr){
-            idx ++;
-            if (idx == index){
-                Node* newNode = new Node(val);;
+            if(idx == index){
+                Node* node = new Node(val);
+                Node* next = curr;
                 Node* prev = curr->prev;
-                newNode->prev = prev;
-                newNode->next = curr;
-                prev->next = newNode;
-                curr->prev = newNode;
+
+                node->next = next;
+                node->prev = prev;
+                prev->next = node;
+                next->prev = node;
+
                 return;
             }
-
             curr = curr->next;
-
-            if (curr == nullptr && idx + 1 == index){
-                addAtTail(val);
-                return;
-            }
+            idx ++;
         }
     }
     
     void deleteAtIndex(int index) {
-        if (index == 0){
-            if (head == nullptr){
-                return;
-            }
-            Node* forward = head->next;
-            if (forward != nullptr){
-                forward->prev = nullptr;
-            }
-            head = forward;
-            if(head == nullptr){
-                tail = nullptr;
-            }
-            return;
-        }
-
-        Node* curr = head;
-        int idx = -1;
+        int idx = 0;
+        Node* curr = left->next;
 
         while (curr != nullptr){
-            idx ++;
-            if (idx == index){
+            if(idx == index && curr != right){
+                Node* next = curr->next;
                 Node* prev = curr->prev;
-                Node* forward = curr->next;
-                if (forward != nullptr)
-                    forward->prev = prev;
-                if (prev != nullptr)
-                    prev->next = forward;
-                if (curr == tail)
-                    tail = prev;
-                return; 
-            }
 
+                prev->next = next;
+                next->prev = prev;
+
+                delete curr;
+                return;
+            }
             curr = curr->next;
+            idx ++;
         }
     }
 };
