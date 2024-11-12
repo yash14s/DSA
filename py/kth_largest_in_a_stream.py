@@ -1,5 +1,4 @@
 class KthLargest:
-
     def __init__(self, k: int, nums: List[int]):
         self.heap = [0]
         self.k = k
@@ -9,9 +8,7 @@ class KthLargest:
         print(self.heap)
 
         #only keep top k elements
-        while len(self.heap) > self.k + 1:
-            self.pop()
-        print(self.heap)
+        
 
     def push(self, val):
         if len(self.heap) == 1:
@@ -23,7 +20,7 @@ class KthLargest:
         curr = self.heap[i]
         parent = self.heap[i//2]
         
-        while curr < parent and i > 0:
+        while curr < parent and i > 1:
             tmp = self.heap[i//2]
             self.heap[i//2] = self.heap[i]
             self.heap[i] = tmp
@@ -41,42 +38,27 @@ class KthLargest:
 
         #percolate down
         i = 1
-        curr = i
-        left_child = 2 * i
-        right_child = (2 * i) +  1
 
-        while i < len(self.heap) and left_child < len(self.heap):
-            if right_child < len(self.heap):
-                if (self.heap[curr] > self.heap[left_child] or self.heap[curr] > self.heap[left_child]):
-                    if self.heap[left_child] < self.heap[right_child]:
-                        tmp = self.heap[left_child]
-                        self.heap[left_child] = self.heap[curr]
-                        self.heap[curr] = tmp
-                        i = left_child
-                    else:
-                        tmp = self.heap[right_child]
-                        self.heap[right_child] = self.heap[curr]
-                        self.heap[curr] = tmp
-                        i = right_child
-                    
-                    curr = i
-                    left_child = 2 * i
-                    right_child = (2 * i) +  1
-            
-            elif self.heap[curr] > self.heap[left_child]:
-                tmp = self.heap[left_child]
-                self.heap[left_child] = self.heap[curr]
-                self.heap[curr] = tmp
-                i = left_child
-                curr = i
-                left_child = 2 * i
-                right_child = (2 * i) +  1
-            
+        while 2 * i < len(self.heap):
+            if (2*i+1 < len(self.heap) and self.heap[2*i+1] < self.heap[2*i] and self.heap[i] > self.heap[2*i+1]):
+                tmp = self.heap[2*i+1]
+                self.heap[2*i+1] = self.heap[i]
+                self.heap[i] = tmp
+                i = 2*i+1
+
+            elif self.heap[i] > self.heap[2*i]:
+                tmp = self.heap[2*i]
+                self.heap[2*i] = self.heap[i]
+                self.heap[i] = tmp
+                i = 2*i
+
             else:
                 break
 
 
-    def add(self, val: int) -> int:
+    def add(self, val: int) -> int: 
         self.push(val)
-        print(self.heap)
+        while len(self.heap) > self.k + 1:
+            self.pop()
+        
         return self.heap[-self.k]
