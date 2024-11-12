@@ -5,11 +5,8 @@ class KthLargest:
 
         for i in range(len(nums)):
             self.push(nums[i])
-        print(self.heap)
 
-        #only keep top k elements
-        
-
+    
     def push(self, val):
         if len(self.heap) == 1:
             self.heap.append(val)
