@@ -1,7 +1,6 @@
 '''
-https://neetcode.io/problems/level-order-traversal-of-binary-tree
+https://leetcode.com/problems/binary-tree-level-order-traversal-ii/description/
 '''
-
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -9,13 +8,13 @@ https://neetcode.io/problems/level-order-traversal-of-binary-tree
 #         self.left = left
 #         self.right = right
 class Solution:
-    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+    def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
         traversed = []
         q = collections.deque()
 
         if root:
             q.append(root)
-        
+
         while len(q) > 0:
             level = []
             for _ in range(len(q)):
@@ -27,5 +26,5 @@ class Solution:
                     q.append(node.right)
             traversed.append(level)
         
+        traversed.reverse()
         return traversed
-        
