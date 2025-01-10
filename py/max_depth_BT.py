@@ -8,6 +8,8 @@ https://leetcode.com/problems/maximum-depth-of-binary-tree/
 #         self.left = left
 #         self.right = right
 class Solution:
+    '''
+    Using BFS
     def maxDepth(self, root: Optional[TreeNode]) -> int:
         maxDepth = 0
         q = collections.deque()
@@ -25,3 +27,9 @@ class Solution:
                     q.append(node.right)
         
         return maxDepth
+    '''
+    #Using DFS
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        return max(self.maxDepth(root.left), self.maxDepth(root.right)) + 1
