@@ -7,6 +7,7 @@ https://leetcode.com/problems/minimum-depth-of-binary-tree/description/
 #         self.val = val
 #         self.left = left
 #         self.right = right
+#BFS
 class Solution:
     def minDepth(self, root: Optional[TreeNode]) -> int:
         minDepth = 0
@@ -27,3 +28,18 @@ class Solution:
                     q.append(node.right)
         
         return minDepth
+    
+#DFS
+class Solution:
+    def minDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        leftDepth = self.minDepth(root.left)
+        rightDepth = self.minDepth(root.right)
+        
+        if leftDepth == 0:
+            return rightDepth + 1
+        if rightDepth == 0:
+            return leftDepth + 1
+
+        return min(leftDepth, rightDepth) + 1
